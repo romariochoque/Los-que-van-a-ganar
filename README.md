@@ -1,5 +1,3 @@
-# 📢 CONFIGURACIÓN DE REPOSITORIO – WOLF TANK CHALLENGE
-
 ## 📌 Información del equipo
 * **Nombre del grupo:** Los que van ganar
 * **Rubro asignado:** RUBRO.2/Gastronomia Y Emprendimiento Social
