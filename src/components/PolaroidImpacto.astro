@@ -1,0 +1,434 @@
+---
+import Icon from "./icons/Icon.astro";
+
+
+interface Props {
+  impacto: {
+    empresario: {
+      nombre: string;
+      foto?: string;
+      emprendimiento: string;
+    };
+    donacion: {
+      monto: number;
+      concepto: string; // ej: "Un saco de harina"
+    };
+    impactoDirecto: string; // ej: "Alimentará a 50 personas"
+    fecha: string;
+    colorPrimario?: "amber" | "purple" | "green" | "red";
+  };
+}
+
+const {
+  impacto = {
+    empresario: {
+      nombre: "María Quispe",
+      emprendimiento: "Panadería Ancestral Manq'a",
+    },
+    donacion: {
+      monto: 25,
+      concepto: "Saco de Harina Premium",
+    },
+    impactoDirecto: "Alimentará a 100 personas con pan ancestral",
+    fecha: new Date().toLocaleDateString("es-ES"),
+    colorPrimario: "amber",
+  },
+} = Astro.props;
+
+// Mapear colores primarios
+const colorMap = {
+  amber: {
+    from: "from-amber-400",
+    to: "to-orange-600",
+    text: "text-amber-900",
+    light: "bg-amber-50",
+    accent: "text-amber-600",
+  },
+  purple: {
+    from: "from-orange-400",
+    to: "to-amber-600",
+    text: "text-orange-900",
+    light: "bg-orange-50",
+    accent: "text-orange-600",
+  },
+  green: {
+    from: "from-green-400",
+    to: "to-teal-600",
+    text: "text-green-900",
+    light: "bg-green-50",
+    accent: "text-green-600",
+  },
+  red: {
+    from: "from-red-400",
+    to: "to-rose-600",
+    text: "text-red-900",
+    light: "bg-red-50",
+    accent: "text-red-600",
+  },
+};
+
+const color = colorMap[impacto.colorPrimario || "amber"];
+---
+
+<div class="w-full max-w-md mx-auto px-4 py-12">
+  <!-- Polaroid Card - Aspecto 1080x1350 (9:10.8) -->
+  <div
+    class="polaroid-card relative w-full bg-white shadow-2xl rounded-lg overflow-hidden"
+    id="polaroid-card"
+    style="aspect-ratio: 1080 / 1350;"
+  >
+    <!-- Contenedor Principal con Gradiente -->
+    <div class={`w-full h-full bg-gradient-to-br ${color.from} ${color.to} p-8 flex flex-col justify-between`}>
+      {/* Encabezado - Logo/Branding */}
+      <div class="text-center mb-4">
+        <p class="text-white text-opacity-90 text-sm font-semibold uppercase tracking-widest">
+          <span class="flex items-center justify-center gap-1"><Icon name="globe" size={16} class="text-white" /> Wayna</span>
+        </p>
+        <p class="text-white text-opacity-80 text-xs">Impacto Social Global</p>
+      </div>
+
+      {/* Sección Central - Impacto Principal */}
+      <div class="flex-grow flex flex-col items-center justify-center text-center mb-8">
+        {/* Icono de Celebración */}
+        <div class="text-7xl mb-6 animate-bounce">
+          <Icon name="sparkles" size={56} class="text-white" />
+        </div>
+
+        {/* Mensaje de Impacto */}
+        <h2 class="text-white font-black text-4xl mb-4 leading-tight drop-shadow-lg">
+          ¡Lo hiciste!
+        </h2>
+
+        {/* Resumen del Impacto */}
+        <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 mb-6 border-2 border-white border-opacity-40">
+          <p class="text-white text-2xl font-bold mb-2">
+            ${impacto.donacion.monto} USD
+          </p>
+          <p class="text-white text-lg font-semibold mb-4">
+            {impacto.donacion.concepto}
+          </p>
+
+          {/* Línea divisoria */}
+          <div class="w-16 h-1 bg-white mx-auto mb-4 rounded-full" />
+
+          <p class="text-white text-base font-bold">
+            {impacto.impactoDirecto}
+          </p>
+        </div>
+
+        {/* Nombre del Empresario */}
+        <p class="text-white text-sm font-semibold mb-2">
+          Apoyo a:
+        </p>
+        <p class="text-white text-lg font-black mb-1">
+          {impacto.empresario.nombre}
+        </p>
+        <p class="text-white text-xs text-opacity-90">
+          {impacto.empresario.emprendimiento}
+        </p>
+      </div>
+
+      {/* Footer - Fecha y Código QR Espacio */}
+      <div class="flex items-center justify-between border-t-2 border-white border-opacity-40 pt-4">
+        <div>
+          <p class="text-white text-xs font-semibold opacity-80">
+            Fecha de apoyo
+          </p>
+          <p class="text-white font-bold">
+            {impacto.fecha}
+          </p>
+        </div>
+
+        {/* Placeholder para QR code (futuro) */}
+        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center border-2 border-white border-opacity-40">
+          <Icon name="smartphone" size={24} class="text-white" />
+        </div>
+      </div>
+
+      {/* Efecto de Sombra Polaroid (bordes levantados) */}
+      <div class="absolute inset-0 pointer-events-none rounded-lg shadow-inner opacity-20" />
+    </div>
+  </div>
+
+  <!-- Botones de Acción Debajo de la Polaroid -->
+  <div class="mt-12 space-y-4">
+    {/* Título de Compartir */}
+    <div class="text-center">
+      <h3 class="text-2xl font-bold text-gray-900 mb-2">
+        <span class="flex items-center justify-center gap-2"><Icon name="share" size={22} class="inline" /> Comparte tu Impacto</span>
+      </h3>
+      <p class="text-gray-600 text-sm">
+        Inspira a otros a ser parte de este cambio
+      </p>
+    </div>
+
+    {/* Grid de Botones de Compartir */}
+    <div class="grid grid-cols-2 gap-3 mb-6">
+      {/* WhatsApp */}
+      <button
+        class="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-green-400 to-green-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 shadow-md"
+        id="btn-share-whatsapp"
+      >
+        <Icon name="message-circle" size={20} />
+        <span class="text-sm">WhatsApp</span>
+      </button>
+
+      {/* Instagram Story */}
+      <button
+        class="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-orange-400 to-amber-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 shadow-md"
+        id="btn-share-instagram"
+      >
+        <Icon name="camera" size={20} />
+        <span class="text-sm">Instagram</span>
+      </button>
+
+      {/* Twitter */}
+      <button
+        class="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 shadow-md"
+        id="btn-share-twitter"
+      >
+        <span class="text-xl font-bold">𝕏</span>
+        <span class="text-sm">Twitter</span>
+      </button>
+
+      {/* Copiar Link */}
+      <button
+        class="flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-gray-400 to-gray-600 text-white font-bold rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 shadow-md"
+        id="btn-copy-link"
+      >
+        <Icon name="link" size={20} />
+        <span class="text-sm">Copiar Link</span>
+      </button>
+    </div>
+
+    {/* Botón de Descargar Imagen */}
+    <button
+      class="w-full py-4 px-6 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-lg rounded-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg flex items-center justify-center gap-3"
+      id="btn-download-image"
+    >
+      <Icon name="download" size={22} />
+      Descargar Polaroid
+    </button>
+
+    {/* Info Adicional */}
+    <div class="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 text-center">
+      <p class="text-blue-900 text-sm">
+        <span class="flex items-center gap-1"><Icon name="lightbulb" size={16} class="text-orange-500 inline" /> <span class="font-bold">Tip:</span></span> Compartir tu impacto inspira a otros emprendedores. ¡Juntos hacemos la diferencia!
+      </p>
+    </div>
+  </div>
+
+  {/* Metrics de Impacto (Opcional) */}
+  <div class="mt-12 grid grid-cols-3 gap-4 text-center">
+    <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border-2 border-blue-200">
+      <p class="text-2xl font-bold text-blue-600">100+</p>
+      <p class="text-xs text-gray-600 mt-1">Personas Impactadas</p>
+    </div>
+
+    <div class="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border-2 border-green-200">
+      <p class="text-2xl font-bold text-green-600">1</p>
+      <p class="text-xs text-gray-600 mt-1">Emprendedor Apoyado</p>
+    </div>
+
+    <div class="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg border-2 border-orange-200">
+      <p class="text-2xl font-bold text-orange-600"><Icon name="recycle" size={24} class="inline" /></p>
+      <p class="text-xs text-gray-600 mt-1">Impacto Sostenible</p>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos CSS para Polaroid -->
+<style>
+  .polaroid-card {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: perspective(1200px) rotateX(2deg) rotateZ(-1deg);
+    transition: all 0.3s ease;
+  }
+
+  .polaroid-card:hover {
+    transform: perspective(1200px) rotateX(0deg) rotateZ(0deg);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Efecto de "polaroid vintage" */
+  .polaroid-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+  }
+
+  /* Animaciones */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+
+  /* Efecto de brillo al pasar el ratón */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  /* Accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Impresión optimizada */
+  @media print {
+    .polaroid-card {
+      box-shadow: none;
+      transform: none;
+      border: 2px solid #ccc;
+    }
+  }
+</style>
+
+<script>
+  // Lógica de Compartir y Descargar
+
+  interface ShareConfig {
+    titulo: string;
+    descripcion: string;
+    url: string;
+    hashtags: string[];
+  }
+
+  class PolaroidShareManager {
+    private shareConfig: ShareConfig = {
+      titulo: "¡Acabo de apoyar a un emprendedor increíble!",
+      descripcion: "He donado a través de Wayna para impactar positivamente. ¡Únete a este movimiento!",
+      url: window.location.href,
+      hashtags: ["#WaynaImpacto", "#Emprendimiento", "#EconomíaSocial", "#CulturaPrimer"],
+    };
+
+    constructor() {
+      this.initEventListeners();
+    }
+
+    private initEventListeners(): void {
+      // WhatsApp Share
+      document.getElementById("btn-share-whatsapp")?.addEventListener("click", () => {
+        this.shareWhatsApp();
+      });
+
+      // Instagram Share
+      document.getElementById("btn-share-instagram")?.addEventListener("click", () => {
+        this.shareInstagram();
+      });
+
+      // Twitter Share
+      document.getElementById("btn-share-twitter")?.addEventListener("click", () => {
+        this.shareTwitter();
+      });
+
+      // Copy Link
+      document.getElementById("btn-copy-link")?.addEventListener("click", () => {
+        this.copyLink();
+      });
+
+      // Download Image
+      document.getElementById("btn-download-image")?.addEventListener("click", () => {
+        this.downloadImage();
+      });
+    }
+
+    private shareWhatsApp(): void {
+      const mensaje = `${this.shareConfig.titulo}\n\n${this.shareConfig.descripcion}\n\n${this.shareConfig.hashtags.join(" ")}\n\n${this.shareConfig.url}`;
+      const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, "_blank");
+      this.showFeedback("Abriendo WhatsApp...");
+    }
+
+    private shareInstagram(): void {
+      // Instagram no permite compartir directamente vía URL
+      // Mostrar instrucciones o abrir app
+      alert(
+        "📸 Descargar la polaroid y compartir en Instagram Stories:\n1. Haz clic en 'Descargar Polaroid'\n2. Abre Instagram Stories\n3. Sube la imagen\n4. ¡Comparte tu impacto!"
+      );
+      console.log("Abrir instrucciones de Instagram");
+    }
+
+    private shareTwitter(): void {
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        this.shareConfig.titulo
+      )}&url=${encodeURIComponent(this.shareConfig.url)}&hashtags=${this.shareConfig.hashtags
+        .map((tag) => tag.replace("#", ""))
+        .join(",")}`;
+      window.open(url, "_blank");
+      this.showFeedback("Abriendo Twitter...");
+    }
+
+    private copyLink(): void {
+      navigator.clipboard.writeText(this.shareConfig.url).then(() => {
+        this.showFeedback("✓ Link copiado al portapapeles");
+      });
+    }
+
+    private downloadImage(): void {
+      // TODO: Integrar con html2canvas o backend para generar imagen PNG
+      // Esto requiere la librería html2canvas
+      console.log("Iniciando descarga de imagen...");
+
+      // Instalación: npm install html2canvas
+      // Luego descomenta el código:
+      /*
+      import html2canvas from 'html2canvas';
+      
+      const card = document.getElementById('polaroid-card');
+      if (card) {
+        html2canvas(card, {
+          scale: 2,
+          backgroundColor: null,
+          logging: false,
+        }).then((canvas) => {
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = `polaroid-impacto-${new Date().getTime()}.png`;
+          link.click();
+          this.showFeedback('Descarga completada ✓');
+        });
+      }
+      */
+
+      // Por ahora, mostrar instrucción
+      alert(
+        "Descarga de imagen:\n\n1. Abre el navegador Inspector (F12)\n2. Right-click en la Polaroid\n3. Save as image\n\n⚠️ Próximamente: Descarga directa con un clic!"
+      );
+    }
+
+    private showFeedback(mensaje: string): void {
+      const feedback = document.createElement("div");
+      feedback.className =
+        "fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse z-50";
+      feedback.textContent = mensaje;
+      document.body.appendChild(feedback);
+
+      setTimeout(() => {
+        feedback.remove();
+      }, 3000);
+    }
+  }
+
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener("DOMContentLoaded", () => {
+    new PolaroidShareManager();
+  });
+</script>

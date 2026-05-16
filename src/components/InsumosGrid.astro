@@ -1,0 +1,268 @@
+---
+import Icon from "./icons/Icon.astro";
+
+interface Props {
+  empresario: {
+    nombre: string;
+    meta: number;
+    recolectado: number;
+  };
+  insumos?: Array<{
+    id: string;
+    nombre: string;
+    precio: number;
+    descripcion: string;
+    icono: string;
+    cantidad?: number;
+  }>;
+}
+
+const {
+  empresario,
+  insumos = [
+    {
+      id: "harina",
+      nombre: "Saco de Harina",
+      precio: 5,
+      descripcion: "Ingrediente base para sus creaciones",
+      icono: "wheat",
+      cantidad: 0,
+    },
+    {
+      id: "delivery",
+      nombre: "Cúbrele el Delivery",
+      precio: 10,
+      descripcion: "Gastos de envío a tus clientes",
+      icono: "truck",
+      cantidad: 0,
+    },
+    {
+      id: "especias",
+      nombre: "Kit de Especias Premium",
+      precio: 15,
+      descripcion: "Sabores andinos auténticos",
+      icono: "flame",
+      cantidad: 0,
+    },
+    {
+      id: "equipamiento",
+      nombre: "Herramienta Especializada",
+      precio: 25,
+      descripcion: "Para mejorar su producción",
+      icono: "hammer",
+      cantidad: 0,
+    },
+  ],
+} = Astro.props;
+
+const totalCarrito = insumos.reduce((sum, insumo) => sum + insumo.precio * (insumo.cantidad || 0), 0);
+---
+
+<div class="w-full max-w-4xl mx-auto px-4 py-8" id="insumos-container">
+  <!-- Encabezado de la Sección -->
+  <div class="mb-8 text-center">
+    <h2 class="text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-2">
+      Apoya a {empresario.nombre}
+    </h2>
+    <p class="text-gray-600 max-w-lg mx-auto">
+      Compra productos que impacten directamente en su emprendimiento. Cada compra es un voto por sus sueños.
+    </p>
+  </div>
+
+  <!-- Grid de Insumos Tangibles -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    {
+      insumos.map((insumo) => (
+        <div
+          class="group relative bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-2 border-transparent hover:border-orange-300"
+          data-insumo-id={insumo.id}
+        >
+          {/* Background decorativo con gradiente */}
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Contenido */}
+          <div class="relative p-6 flex flex-col h-full">
+            {/* Icono Grande */}
+            <div class="text-6xl mb-4 text-center group-hover:scale-110 transition-transform duration-300 flex items-center justify-center">
+              <Icon name={insumo.icono} size={48} class="text-orange-500" />
+            </div>
+
+            {/* Nombre e Descripción */}
+            <h3 class="text-lg font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition-colors">
+              {insumo.nombre}
+            </h3>
+            <p class="text-sm text-gray-600 mb-4 flex-grow">
+              {insumo.descripcion}
+            </p>
+
+            {/* Precio Destacado */}
+            <div class="mb-4 border-t-2 border-orange-200 pt-4">
+              <p class="text-3xl font-bold text-orange-600">
+                ${insumo.precio}
+                <span class="text-sm text-gray-500 font-normal"> USD</span>
+              </p>
+            </div>
+
+            {/* Botón de Acción CTA */}
+            <button
+              class="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-lg hover:from-orange-600 hover:to-orange-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg insumo-btn"
+              data-insumo-id={insumo.id}
+              data-precio={insumo.precio}
+            >
+              Agregar al Carrito
+            </button>
+
+            {/* Badge de Cantidad en Carrito */}
+            <div
+              class="absolute -top-2 -right-2 w-8 h-8 bg-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center opacity-0 transition-opacity duration-200 cantidad-badge"
+              data-insumo-id={insumo.id}
+            >
+              0
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Carrito Flotante / Resumen -->
+  <div class="sticky bottom-0 left-0 right-0 bg-white border-t-2 border-orange-300 shadow-2xl p-6 rounded-t-2xl">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex-1">
+        <p class="text-gray-600 text-sm mb-1">Monto Total de tu Apoyo</p>
+        <p class="text-4xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent" id="total-carrito">
+          ${totalCarrito}
+        </p>
+      </div>
+
+      <button
+        class="md:w-auto flex-1 py-4 px-8 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white font-bold text-lg rounded-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg"
+        id="btn-checkout"
+      >
+        <span class="flex items-center justify-center gap-2"><Icon name="gift" size={20} /> Ir al Pago Seguro</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos CSS para Animaciones Avanzadas -->
+<style>
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .group:hover {
+    animation: none;
+  }
+
+  /* Efecto de "brillo" al pasar el ratón */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .insumo-btn:hover {
+    background-size: 1000px 100%;
+    animation: shimmer 0.6s ease-in-out;
+  }
+
+  /* Pulse effect en el badge */
+  @keyframes pulse-badge {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .cantidad-badge.active {
+    animation: pulse-badge 0.4s ease-in-out;
+  }
+</style>
+
+<script>
+  // Lógica de Estado del Carrito
+  interface CarritoState {
+    [key: string]: number;
+  }
+
+  const carrito: CarritoState = {};
+  const botonesInsumo = document.querySelectorAll(".insumo-btn");
+  const btnCheckout = document.getElementById("btn-checkout");
+  const totalCarritoDisplay = document.getElementById("total-carrito");
+
+  // Función para actualizar el carrito
+  function actualizarCarrito(insumoId: string, precio: number) {
+    carrito[insumoId] = (carrito[insumoId] || 0) + 1;
+
+    // Actualizar badge
+    const badge = document.querySelector(
+      `.cantidad-badge[data-insumo-id="${insumoId}"]`
+    ) as HTMLElement;
+    if (badge) {
+      badge.textContent = carrito[insumoId].toString();
+      badge.classList.add("opacity-100");
+      badge.classList.remove("opacity-0");
+      badge.classList.add("active");
+    }
+
+    // Actualizar total
+    calcularTotal();
+
+    // Log para debugging
+    console.log("Carrito actualizado:", carrito);
+  }
+
+  function calcularTotal(): number {
+    let total = 0;
+    botonesInsumo.forEach((btn) => {
+      const insumoId = btn.getAttribute("data-insumo-id") || "";
+      const precio = parseFloat(btn.getAttribute("data-precio") || "0");
+      total += (carrito[insumoId] || 0) * precio;
+    });
+
+    if (totalCarritoDisplay) {
+      totalCarritoDisplay.textContent = `$${total}`;
+    }
+    return total;
+  }
+
+  // Event listeners en botones
+  botonesInsumo.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const insumoId = btn.getAttribute("data-insumo-id") || "";
+      const precio = parseFloat(btn.getAttribute("data-precio") || "0");
+      actualizarCarrito(insumoId, precio);
+
+      // Feedback visual: animación de "pulse"
+      btn.classList.add("scale-95");
+      setTimeout(() => btn.classList.remove("scale-95"), 150);
+    });
+  });
+
+  // Botón Checkout (integración futura con Stripe/PayPal)
+  if (btnCheckout) {
+    btnCheckout.addEventListener("click", () => {
+      const montoTotal = calcularTotal();
+      if (montoTotal > 0) {
+        // TODO: Integrar con pasarela de pago (Stripe API, etc)
+        console.log("Procesar pago de: $" + montoTotal);
+        console.log("Productos:", carrito);
+        // Redirigir a checkout o abrir modal de pago
+      } else {
+        alert("Por favor, selecciona al menos un producto para continuar");
+      }
+    });
+  }
+</script>
