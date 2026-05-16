@@ -1,6 +1,4 @@
 ---
-// src/layouts/Layout.astro
-
 const { title = "Wayna Manq'a" } = Astro.props;
 ---
 
@@ -10,30 +8,22 @@ const { title = "Wayna Manq'a" } = Astro.props;
 <head>
 
   <meta charset="UTF-8" />
-
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
-
+    content="width=device-width, initial-scale=1.0"/>
   <title>{title}</title>
-
-  <!-- GOOGLE FONTS -->
   <link
     rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
+    href="https://fonts.googleapis.com">
 
   <link
     rel="preconnect"
     href="https://fonts.gstatic.com"
-    crossorigin
-  >
+    crossorigin>
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  >
+    rel="stylesheet">
 
   <style>
 
@@ -55,7 +45,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
       --bg:#f3f4f6;
       --card:#ffffff;
       --card2:#e5e7eb;
-      --text:#111827;
+      --text:#031742;
       --gray:#4b5563;
       --border:rgba(0,0,0,.08);
 
@@ -84,8 +74,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
       transition:.4s;
 
     }
-
-    /* SIDEBAR */
+ 
 
     .sidebar{
 
@@ -172,7 +161,6 @@ const { title = "Wayna Manq'a" } = Astro.props;
 
     }
 
-    /* TOPBAR */
 
     .topbar{
 
@@ -215,7 +203,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
 
     .search{
 
-      width:320px;
+      width:321px;
 
       background:var(--card2);
 
@@ -265,8 +253,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
       transform:translateY(-2px);
     }
 
-    /* MAIN */
-
+     
     .main-content{
 
       margin-left:270px;
@@ -278,8 +265,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
       padding-bottom:60px;
 
     }
-
-    /* SCROLLBAR */
+ 
 
     ::-webkit-scrollbar{
       width:10px;
@@ -293,9 +279,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
       background:#22c55e;
       border-radius:20px;
     }
-
-    /* MOBILE */
-
+ 
     .mobile-menu{
       display:none;
     }
@@ -334,7 +318,7 @@ const { title = "Wayna Manq'a" } = Astro.props;
 
 <body>
 
-  <!-- SIDEBAR -->
+   
 
   <aside
     class="sidebar"
@@ -374,9 +358,7 @@ Tema
 </a>
     </div>
 
-  </aside>
-
-  <!-- TOPBAR -->
+  </aside> 
 
   <header class="topbar">
 
@@ -406,17 +388,14 @@ Tema
     </button>
 
   </header>
-
-  <!-- CONTENIDO -->
+ 
 
   <main class="main-content">
 
     <slot />
 
   </main>
-
-  <!-- SCRIPT -->
-
+ 
   <script is:inline>
 
     window.toggleTheme = function(){
