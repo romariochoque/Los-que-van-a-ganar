@@ -1,210 +1,1337 @@
 ---
-import astroLogo from '../assets/astro.svg';
-import background from '../assets/background.svg';
+const stories = [
+{
+  name:"María Quispe",
+  age:"19 años",
+  city:"La Paz",
+  likes:"245",
+  comments:"82",
+  category:"Emprendimiento",
+  story:"María comenzó vendiendo comida en las calles de La Paz para ayudar a sus hermanos menores. Caminaba largas distancias bajo lluvia y frío para conseguir vender más platos. Con mucho esfuerzo logró ahorrar dinero, abrir un pequeño negocio familiar y hoy genera trabajo para otras personas jóvenes de su comunidad.",
+  image:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=500"
+},
+{
+  name:"Carlos Mamani",
+  age:"21 años",
+  city:"El Alto",
+  likes:"312",
+  comments:"91",
+  category:"Tecnología",
+  story:"Carlos aprendió programación desde un celular usando internet gratuito. Estudiaba de madrugada porque durante el día ayudaba en el taller mecánico de su padre. Hoy desarrolla páginas web y plataformas digitales para pequeños negocios.",
+  image:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500"
+},
+{
+  name:"Lucía Flores",
+  age:"20 años",
+  city:"Cochabamba",
+  likes:"188",
+  comments:"44",
+  category:"Arte",
+
+  story:"Lucía vendía dibujos y retratos en plazas para continuar estudiando diseño gráfico. Poco a poco consiguió clientes y ahora trabaja creando identidades visuales para emprendimientos juveniles.",
+
+  image:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500"
+},
+
+{
+  name:"Andrés Choque",
+  age:"24 años",
+  city:"Santa Cruz",
+  likes:"274",
+  comments:"61",
+  category:"Marketing",
+
+  story:"Andrés perdió su trabajo durante una crisis económica y tuvo que comenzar desde cero. Aprendió marketing digital viendo tutoriales gratuitos y hoy ayuda a pequeños negocios locales.",
+
+  image:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=500"
+},
+
+{
+  name:"Sofía Ramos",
+  age:"22 años",
+  city:"Sucre",
+  likes:"194",
+  comments:"36",
+  category:"Artesanías",
+
+  story:"Sofía hacía artesanías mientras cuidaba a su abuela enferma. Con dedicación comenzó a vender sus productos en internet y actualmente distribuye pedidos en varias ciudades.",
+
+  image:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=500"
+},
+
+{
+  name:"Diego Fernández",
+  age:"23 años",
+  city:"Potosí",
+  likes:"230",
+  comments:"53",
+  category:"Startup",
+
+  story:"Diego caminaba kilómetros para asistir a cursos gratuitos sobre negocios y liderazgo. Gracias a su perseverancia creó un emprendimiento tecnológico.",
+
+  image:"https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=500"
+}
+,{
+  name:"Ana López",
+  age:"18 años",
+  city:"Tarija",
+  likes:"145",
+  comments:"22",
+  category:"Educación",
+
+  story:"Ana trabajaba vendiendo dulces para pagar sus estudios y hoy enseña matemáticas a niños.",
+
+  image:"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=500"
+},
+
+{
+  name:"Pedro Rojas",
+  age:"22 años",
+  city:"Oruro",
+  likes:"178",
+  comments:"31",
+  category:"Deportes",
+
+  story:"Pedro entrenaba fútbol después de trabajar todo el día ayudando a su familia.",
+
+  image:"https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=500"
+},
+
+{
+  name:"Valeria Cruz",
+  age:"20 años",
+  city:"Cochabamba",
+  likes:"201",
+  comments:"48",
+  category:"Arte",
+
+  story:"Valeria comenzó pintando murales pequeños y hoy participa en exposiciones.",
+
+  image:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=500"
+},
+
+{
+  name:"Luis Fernández",
+  age:"23 años",
+  city:"La Paz",
+  likes:"154",
+  comments:"25",
+  category:"Tecnología",
+
+  story:"Luis aprendió desarrollo web desde cibercafés gratuitos.",
+
+  image:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500"
+},
+
+{
+  name:"Camila Vargas",
+  age:"19 años",
+  city:"Santa Cruz",
+  likes:"260",
+  comments:"74",
+  category:"Fotografía",
+
+  story:"Camila inició tomando fotos con un celular antiguo y hoy trabaja profesionalmente.",
+
+  image:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=500"
+},
+
+{
+  name:"Javier Molina",
+  age:"25 años",
+  city:"Potosí",
+  likes:"187",
+  comments:"29",
+  category:"Negocios",
+
+  story:"Javier abrió una pequeña tienda virtual desde casa.",
+
+  image:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=500"
+},
+
+{
+  name:"Rosa Nina",
+  age:"21 años",
+  city:"El Alto",
+  likes:"220",
+  comments:"52",
+  category:"Artesanía",
+
+  story:"Rosa realiza tejidos artesanales para apoyar a su familia.",
+
+  image:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=500"
+},
+
+{
+  name:"Marco Salinas",
+  age:"24 años",
+  city:"Sucre",
+  likes:"198",
+  comments:"38",
+  category:"Startup",
+
+  story:"Marco creó una app para estudiantes universitarios.",
+
+  image:"https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=500"
+},
+
+{
+  name:"Daniela Pérez",
+  age:"20 años",
+  city:"Tarija",
+  likes:"167",
+  comments:"27",
+  category:"Música",
+
+  story:"Daniela cantaba en plazas para ganar dinero y seguir estudiando.",
+
+  image:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500"
+},
+
+{
+  name:"Fernando Ruiz",
+  age:"26 años",
+  city:"Cochabamba",
+  likes:"143",
+  comments:"20",
+  category:"Programación",
+
+  story:"Fernando desarrolló una plataforma educativa gratuita.",
+
+  image:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500"
+},
+
+{
+  name:"Natalia Flores",
+  age:"19 años",
+  city:"La Paz",
+  likes:"241",
+  comments:"57",
+  category:"Diseño",
+
+  story:"Natalia aprendió diseño viendo videos gratuitos en internet.",
+
+  image:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=500"
+},
+
+{
+  name:"José Lima",
+  age:"27 años",
+  city:"Santa Cruz",
+  likes:"176",
+  comments:"35",
+  category:"Marketing",
+
+  story:"José comenzó ayudando negocios pequeños desde redes sociales.",
+
+  image:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=500"
+},
+
+{
+  name:"Paola Gómez",
+  age:"22 años",
+  city:"Pando",
+  likes:"189",
+  comments:"40",
+  category:"Manualidades",
+
+  story:"Paola vende productos hechos a mano mediante internet.",
+
+  image:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=500"
+},
+
+{
+  name:"Kevin Rocha",
+  age:"23 años",
+  city:"Beni",
+  likes:"211",
+  comments:"49",
+  category:"Tecnología",
+
+  story:"Kevin reparaba computadoras usadas para aprender tecnología.",
+
+  image:"https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=500"
+},
+
+{
+  name:"Andrea Calle",
+  age:"20 años",
+  city:"Oruro",
+  likes:"159",
+  comments:"26",
+  category:"Arte",
+
+  story:"Andrea dibuja retratos personalizados desde pequeña.",
+
+  image:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500"
+},
+
+{
+  name:"Miguel Torres",
+  age:"28 años",
+  city:"Sucre",
+  likes:"173",
+  comments:"28",
+  category:"Negocios",
+
+  story:"Miguel comenzó vendiendo accesorios en línea.",
+
+  image:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=500"
+},
+
+{
+  name:"Sonia Mamani",
+  age:"21 años",
+  city:"El Alto",
+  likes:"204",
+  comments:"41",
+  category:"Educación",
+
+  story:"Sonia enseña lectura a niños de su barrio.",
+
+  image:"https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=500"
+},
+
+{
+  name:"Ricardo Pérez",
+  age:"24 años",
+  city:"Potosí",
+  likes:"192",
+  comments:"36",
+  category:"Tecnología",
+
+  story:"Ricardo desarrolló herramientas digitales para estudiantes.",
+
+  image:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500"
+},
+
+{
+  name:"Elena Vargas",
+  age:"20 años",
+  city:"Tarija",
+  likes:"214",
+  comments:"44",
+  category:"Moda",
+
+  story:"Elena diseña ropa juvenil inspirada en cultura boliviana.",
+
+  image:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=500"
+},
+
+{
+  name:"Bruno Silva",
+  age:"22 años",
+  city:"Santa Cruz",
+  likes:"182",
+  comments:"30",
+  category:"Fotografía",
+
+  story:"Bruno empezó tomando fotografías en eventos pequeños.",
+
+  image:"https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=500"
+}
+];
 ---
 
-<div id="container">
-	<img id="background" src={background.src} alt="" fetchpriority="high" />
-	<main>
-		<section id="hero">
-			<a href="https://astro.build"
-				><img src={astroLogo.src} width="115" height="48" alt="Astro Homepage" /></a
-			>
-			<h1>
-				To get started, open the <code><pre>src/pages</pre></code> directory in your project.
-			</h1>
-			<section id="links">
-				<a class="button" href="https://docs.astro.build">Read our docs</a>
-				<a href="https://astro.build/chat"
-					>Join our Discord <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36"
-						><path
-							fill="currentColor"
-							d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z"
-						></path></svg
-					>
-				</a>
-			</section>
-		</section>
-	</main>
+<section class="hero">
 
-	<a href="https://astro.build/blog/astro-6-beta/" id="news" class="box">
-		<svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg"
-			><path
-				d="M24.667 12c1.333 1.414 2 3.192 2 5.334 0 4.62-4.934 5.7-7.334 12C18.444 28.567 18 27.456 18 26c0-4.642 6.667-7.053 6.667-14Zm-5.334-5.333c1.6 1.65 2.4 3.43 2.4 5.333 0 6.602-8.06 7.59-6.4 17.334C13.111 27.787 12 25.564 12 22.666c0-4.434 7.333-8 7.333-16Zm-6-5.333C15.111 3.555 16 5.556 16 7.333c0 8.333-11.333 10.962-5.333 22-3.488-.774-6-4-6-8 0-8.667 8.666-10 8.666-20Z"
-				fill="#111827"></path></svg
-		>
-		<h2>What's New in Astro 6.0?</h2>
-		<p>
-			Redesigned dev server, fonts, live collections, built-in CSP support, and more! Click to
-			explore Astro 6.0's new features.
-		</p>
-	</a>
+  <div class="hero-title">
+
+    <span>
+      HISTORIAS REALES
+    </span>
+
+    <h1>
+      Jóvenes que cambiaron su destino
+    </h1>
+
+    <p>
+      Historias reales de esfuerzo,
+      superación y oportunidades.
+    </p>
+
+  </div>
+
+  <div
+    id="donaciones"
+    class="donation-box"
+  >
+
+    <h2>
+    Apoya Wayna Manq'a
+    </h2>
+
+    <p>
+      Tus donaciones ayudan a más jóvenes
+      a compartir sus historias.
+    </p>
+
+    <a
+  href="https://github.com/romariochoque/Los-que-van-a-ganar/blob/feature/Romario/src/pages/index.astro"
+  target="_blank"
+  class="donate-btn"
+>
+Donar Ahora
+</a>
+
+  </div>
+
+ 
+
+  <section
+    id="historias"
+    class="stories-grid"
+  >
+
+    {
+      stories.map((item) => (
+
+        <div
+          class="story-card searchable-card"
+
+          data-name={item.name.toLowerCase()}
+
+          data-category={item.category.toLowerCase()}
+
+          onclick={`openPanel(
+            '${item.name}',
+            '${item.age}',
+            '${item.city}',
+            '${item.category}',
+            '${item.likes}',
+            '${item.comments}',
+            '${item.story}',
+            '${item.image}'
+          )`}
+        >
+
+          <img
+            src={item.image}
+            alt={item.name}
+          >
+
+          <div class="story-content">
+
+            <h2>{item.name}</h2>
+
+            <span class="category">
+              {item.category}
+            </span>
+
+            <p>{item.story}</p>
+
+            <div class="card-actions">
+
+              <button class="like-btn">
+            {item.likes}
+              </button>
+
+              <button class="comment-btn">
+             {item.comments}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      ))
+    }
+
+  </section>
+<section
+  id="impacto"
+  class="impact-section"
+>
+
+  <h2>
+     Impacto de Wayna Manq'a
+  </h2>
+
+  <div class="impact-grid">
+
+    <div class="impact-card">
+      <h3>+580</h3>
+      <p>Historias compartidas</p>
+    </div>
+
+    <div class="impact-card">
+      <h3>+220</h3>
+      <p>Jóvenes apoyados</p>
+    </div>
+
+    <div class="impact-card">
+      <h3>+48</h3>
+      <p>Proyectos creados</p>
+    </div>
+
+    <div class="impact-card">
+      <h3>+19</h3>
+      <p>Ciudades conectadas</p>
+    </div>
+
+  </div>
+
+</section>
+<section
+  id="comentarios"
+  class="global-comments"
+>
+
+  <h2>
+     Comentarios de la comunidad
+  </h2>
+
+  <div class="comment">
+    “Gracias a estas historias muchos jóvenes se inspiran.”
+  </div>
+
+  <div class="comment">
+    “Wayna Manq'a demuestra que sí existen oportunidades.”
+  </div>
+
+  <div class="comment">
+    “Muy buen proyecto para apoyar emprendimientos.”
+  </div>
+
+</section>
+  <!-- PANEL -->
+
+  <div
+    id="panel"
+    class="panel"
+  >
+
+    <div class="panel-box">
+
+      <button
+        class="close-btn"
+        onclick="closePanel()"
+      >
+        ✕
+      </button>
+
+      <img
+        id="panel-img"
+        src=""
+        alt=""
+      >
+
+      <h2 id="panel-name"></h2>
+
+      <div class="info">
+
+        <span id="panel-age"></span>
+
+        <span id="panel-city"></span>
+
+        <span id="panel-category"></span>
+
+      </div>
+
+      <div class="info">
+
+        <span id="panel-likes"></span>
+
+        <span id="panel-comments"></span>
+
+      </div>
+
+      <p id="panel-story"></p>
+
+    <div class="panel-buttons">
+
+  <button id="supportBtn">
+     Apoyar
+  </button>
+
+  <button id="shareBtn">
+     Compartir
+  </button>
+
+  <button id="donatePanelBtn">
+     Donar
+  </button>
+
 </div>
 
+      <!-- COMENTARIOS -->
+
+    <div class="comments">
+
+  <h3 id="commentsCount">
+     0 comentarios
+  </h3>
+
+  <div class="comment-form">
+
+    <input
+      type="text"
+      id="commentInput"
+      placeholder="Escribe un comentario..."
+    >
+
+    <button id="commentButton">
+      Enviar
+    </button>
+
+  </div>
+
+  <div id="commentsContainer"></div>
+
+</div>
+</section>
+
+<script is:inline>
+
+let currentPerson = "";
+
+window.openPanel = function(
+  name,
+  age,
+  city,
+  category,
+  likes,
+  comments,
+  story,
+  image
+){
+
+  currentPerson = name;
+
+  document.getElementById("panel").style.display =
+  "flex";
+
+  document.getElementById("panel-name").textContent =
+  name;
+
+  document.getElementById("panel-age").textContent =
+  "🎂 " + age;
+
+  document.getElementById("panel-city").textContent =
+  "📍 " + city;
+
+  document.getElementById("panel-category").textContent =
+  "🚀 " + category;
+
+  document.getElementById("panel-likes").textContent =
+  "❤️ Likes: " + likes;
+
+  document.getElementById("panel-comments").textContent =
+  "💬 Comentarios";
+
+  document.getElementById("panel-story").textContent =
+  story;
+
+  document.getElementById("panel-img").src =
+  image;
+
+  loadComments(name);
+};
+
+window.closePanel = function(){
+
+  document.getElementById("panel").style.display =
+  "none";
+};
+
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    
+    const likeButtons =
+      document.querySelectorAll(".like-btn");
+
+    likeButtons.forEach((button,index) => {
+
+  const likeKey =
+  "liked_" + index;
+
+  if(localStorage.getItem(likeKey)){
+
+    button.classList.add("liked");
+
+  }
+
+  button.addEventListener(
+    "click",
+    (e) => {
+
+      e.stopPropagation();
+
+      if(localStorage.getItem(likeKey)){
+
+        alert(
+          "Ya diste like"
+        );
+
+        return;
+      }
+
+      let current =
+      parseInt(
+        button.innerText.replace(/\D/g,"")
+      );
+
+      current++;
+
+      button.innerHTML =
+      ` ${current}`;
+
+      localStorage.setItem(
+        likeKey,
+        "true"
+      );
+
+      button.classList.add("liked");
+
+    }
+  );
+
+});
+
+    const donationLink =
+    "https://github.com/romariochoque/Los-que-van-a-ganar/blob/feature/Romario/src/pages/index.astro";
+
+    document
+    .getElementById("supportBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        window.open(
+          donationLink,
+          "_blank"
+        );
+
+      }
+    );
+
+    document
+    .getElementById("donatePanelBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        window.open(
+          donationLink,
+          "_blank"
+        );
+
+      }
+    );
+ 
+    document
+    .getElementById("shareBtn")
+    .addEventListener(
+      "click",
+      async () => {
+
+        const shareData = {
+
+          title:"Wayna Manq'a",
+
+          text:
+          "Mira esta historia inspiradora",
+
+          url:window.location.href
+
+        };
+
+        if(navigator.share){
+
+          await navigator.share(
+            shareData
+          );
+
+        }else{
+
+          navigator.clipboard.writeText(
+            shareData.url
+          );
+
+          alert(
+            "Link copiado"
+          );
+        }
+
+      }
+    );
+
+
+    document
+    .getElementById("commentButton")
+    .addEventListener(
+      "click",
+      () => {
+
+        const input =
+        document.getElementById(
+          "commentInput"
+        );
+
+        const value =
+        input.value.trim();
+
+        if(value === "") return;
+
+        let comments =
+        JSON.parse(
+          localStorage.getItem(
+            currentPerson
+          )
+        ) || [];
+
+        comments.push(value);
+
+        localStorage.setItem(
+          currentPerson,
+          JSON.stringify(comments)
+        );
+
+        input.value = "";
+
+        loadComments(currentPerson);
+
+      }
+    );
+
+
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+    if(searchInput){
+
+      searchInput.addEventListener(
+        "input",
+        () => {
+
+          const value =
+          searchInput.value
+          .toLowerCase();
+
+          const cards =
+          document.querySelectorAll(
+            ".searchable-card"
+          );
+
+          cards.forEach(card => {
+
+            const name =
+            card.dataset.name;
+
+            const category =
+            card.dataset.category;
+
+            if(
+              name.includes(value) ||
+              category.includes(value)
+            ){
+
+              card.style.display =
+              "block";
+
+            }else{
+
+              card.style.display =
+              "none";
+            }
+
+          });
+
+        }
+      );
+
+    }
+
+});
+
+function loadComments(person){
+
+  const commentsContainer =
+  document.getElementById(
+    "commentsContainer"
+  );
+
+  const commentsCount =
+  document.getElementById(
+    "commentsCount"
+  );
+
+  commentsContainer.innerHTML = "";
+
+  let comments =
+  JSON.parse(
+    localStorage.getItem(person)
+  ) || [];
+
+  commentsCount.innerHTML =
+  ` ${comments.length} comentarios`;
+
+  comments.forEach(
+    (comment,index) => {
+
+      const div =
+      document.createElement("div");
+
+      div.className = "comment";
+
+      div.innerHTML = `
+        <strong>
+          Usuario ${index + 1}
+        </strong>
+
+        <p>${comment}</p>
+      `;
+
+      commentsContainer.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+</script>
+
 <style>
-	#background {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
-		filter: blur(100px);
-	}
+.impact-section{
 
-	#container {
-		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		height: 100%;
-	}
+  margin-top:120px;
+}
 
-	main {
-		height: 100%;
-		display: flex;
-		justify-content: center;
-	}
+.impact-section h2{
 
-	#hero {
-		display: flex;
-		align-items: start;
-		flex-direction: column;
-		justify-content: center;
-		padding: 16px;
-	}
+  font-size:3rem;
 
-	h1 {
-		font-size: 22px;
-		margin-top: 0.25em;
-	}
+  margin-bottom:40px;
+}
 
-	#links {
-		display: flex;
-		gap: 16px;
-	}
+.impact-grid{
 
-	#links a {
-		display: flex;
-		align-items: center;
-		padding: 10px 12px;
-		color: #111827;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
+  display:grid;
 
-	#links a:hover {
-		color: rgb(78, 80, 86);
-	}
+  grid-template-columns:
+  repeat(auto-fit,minmax(220px,1fr));
 
-	#links a svg {
-		height: 1em;
-		margin-left: 8px;
-	}
+  gap:24px;
+}
 
-	#links a.button {
-		color: white;
-		background: linear-gradient(83.21deg, #3245ff 0%, #bc52ee 100%);
-		box-shadow:
-			inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-			inset 0 -2px 0 rgba(0, 0, 0, 0.24);
-		border-radius: 10px;
-	}
+.impact-card{
 
-	#links a.button:hover {
-		color: rgb(230, 230, 230);
-		box-shadow: none;
-	}
+  background:#0f172a;
 
-	pre {
-		font-family:
-			ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono',
-			monospace;
-		font-weight: normal;
-		background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin: 0;
-	}
+  border:1px solid rgba(255,255,255,.08);
 
-	h2 {
-		margin: 0 0 1em;
-		font-weight: normal;
-		color: #111827;
-		font-size: 20px;
-	}
+  border-radius:24px;
 
-	p {
-		color: #4b5563;
-		font-size: 16px;
-		line-height: 24px;
-		letter-spacing: -0.006em;
-		margin: 0;
-	}
+  padding:30px;
 
-	code {
-		display: inline-block;
-		background:
-			linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,
-			linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%) border-box;
-		border-radius: 8px;
-		border: 1px solid transparent;
-		padding: 6px 8px;
-	}
+  text-align:center;
+}
 
-	.box {
-		padding: 16px;
-		background: rgba(255, 255, 255, 1);
-		border-radius: 16px;
-		border: 1px solid white;
-	}
+.impact-card h3{
 
-	#news {
-		position: absolute;
-		bottom: 16px;
-		right: 16px;
-		max-width: 300px;
-		text-decoration: none;
-		transition: background 0.2s;
-		backdrop-filter: blur(50px);
-	}
+  color:#22c55e;
 
-	#news:hover {
-		background: rgba(255, 255, 255, 0.55);
-	}
+  font-size:2.5rem;
+}
 
-	@media screen and (max-height: 368px) {
-		#news {
-			display: none;
-		}
-	}
+.global-comments{
 
-	@media screen and (max-width: 768px) {
-		#container {
-			display: flex;
-			flex-direction: column;
-		}
+  margin-top:120px;
+}
 
-		#hero {
-			display: block;
-			padding-top: 10%;
-		}
+.global-comments h2{
 
-		#links {
-			flex-wrap: wrap;
-		}
+  font-size:2.6rem;
 
-		#links a.button {
-			padding: 14px 18px;
-		}
+  margin-bottom:30px;
+}
 
-		#news {
-			right: 16px;
-			left: 16px;
-			bottom: 2.5rem;
-			max-width: 100%;
-		}
+.comment{
 
-		h1 {
-			line-height: 1.5;
-		}
-	}
+  background:#0f172a;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:20px;
+
+  padding:22px;
+
+  margin-top:16px;
+
+  color:#cbd5e1;
+}
+
+.donate-btn{
+
+  display:inline-block;
+
+  text-decoration:none;
+}
+.hero{
+  padding:40px;
+}
+
+.hero-title{
+  margin-bottom:50px;
+}
+
+.hero-title span{
+  color:#22c55e;
+}
+
+.hero-title h1{
+  margin-top:20px;
+  font-size:4rem;
+}
+
+.hero-title p{
+  margin-top:20px;
+  color:#94a3b8;
+}
+
+.donation-box{
+
+  margin-top:40px;
+
+  background:#0f172a;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:28px;
+
+  padding:30px;
+}
+
+.donate-btn{
+
+  margin-top:20px;
+
+  border:none;
+
+  padding:14px 24px;
+
+  border-radius:16px;
+
+  background:#22c55e;
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.stories-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(320px,1fr));
+
+  gap:30px;
+
+  margin-top:50px;
+}
+
+.story-card{
+
+  background:#0f172a;
+
+  border-radius:28px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  transition:.4s;
+
+  cursor:pointer;
+}
+
+.story-card:hover{
+  transform:translateY(-10px);
+}
+
+.story-card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+.story-content{
+  padding:24px;
+}
+
+.category{
+
+  display:inline-block;
+
+  margin-top:14px;
+
+  background:rgba(34,197,94,.12);
+
+  color:#86efac;
+
+  padding:8px 14px;
+
+  border-radius:999px;
+}
+
+.story-content p{
+
+  margin-top:18px;
+
+  color:#94a3b8;
+
+  line-height:1.8;
+}
+
+.card-actions{
+
+  display:flex;
+
+  gap:12px;
+
+  margin-top:20px;
+}
+
+.like-btn,
+.comment-btn{
+
+  border:none;
+
+  padding:10px 16px;
+
+  border-radius:12px;
+
+  background:rgba(34,197,94,.12);
+
+  color:#86efac;
+}
+
+.panel{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(0,0,0,.7);
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  z-index:9999;
+
+  padding:20px;
+}
+
+.panel-box{
+
+  width:100%;
+  max-width:700px;
+
+  background:#0f172a;
+
+  border-radius:30px;
+
+  padding:30px;
+
+  position:relative;
+
+  max-height:90vh;
+
+  overflow:auto;
+}
+
+.close-btn{
+
+  position:absolute;
+
+  top:18px;
+  right:18px;
+
+  border:none;
+
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:#22c55e;
+
+  color:white;
+
+  cursor:pointer;
+}
+
+.panel-box img{
+
+  width:100%;
+
+  height:320px;
+
+  object-fit:cover;
+
+  border-radius:20px;
+}
+
+.panel-box h2{
+  margin-top:20px;
+}
+
+.info{
+
+  display:flex;
+
+  gap:14px;
+
+  flex-wrap:wrap;
+
+  margin-top:20px;
+}
+
+.info span{
+
+  background:rgba(34,197,94,.12);
+
+  color:#86efac;
+
+  padding:10px 14px;
+
+  border-radius:999px;
+}
+
+.panel-box p{
+
+  margin-top:24px;
+
+  line-height:1.8;
+
+  color:#cbd5e1;
+}
+
+.panel-buttons{
+
+  display:flex;
+
+  gap:14px;
+
+  margin-top:24px;
+
+  flex-wrap:wrap;
+}
+
+.panel-buttons button{
+
+  border:none;
+
+  padding:12px 18px;
+
+  border-radius:14px;
+
+  background:#22c55e;
+
+  color:white;
+
+  cursor:pointer;
+
+  font-weight:700;
+}
+
+.comments{
+  margin-top:40px;
+}
+
+.comment{
+
+  background:rgba(255,255,255,.05);
+
+  padding:16px;
+
+  border-radius:14px;
+
+  margin-top:12px;
+}
+
+@media(max-width:768px){
+
+  .hero{
+    padding:20px;
+  }
+
+  .hero-title h1{
+    font-size:2.7rem;
+  }
+
+}
+.comment-form{
+
+  display:flex;
+
+  gap:12px;
+
+  margin-top:20px;
+
+  flex-wrap:wrap;
+}
+
+.comment-form input{
+
+  flex:1;
+
+  min-width:220px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:#111827;
+
+  color:white;
+
+  outline:none;
+}
+
+.comment-form button{
+
+  border:none;
+
+  padding:14px 18px;
+
+  border-radius:14px;
+
+  background:#22c55e;
+
+  color:white;
+
+  cursor:pointer;
+
+  font-weight:700;
+}
+
+#commentsContainer{
+
+  margin-top:24px;
+}
+.like-btn.liked{
+
+  background:#22c55e;
+
+  color:white;
+
+  transform:scale(1.05);
+}
 </style>
