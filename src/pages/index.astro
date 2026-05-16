@@ -1,11 +1,38 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import PayPalPanel from '../components/PayPalPanel.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+	<main class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+		<div class="max-w-6xl mx-auto">
+			<header class="text-center mb-12">
+				<h1 class="text-5xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent mb-4">
+					Manq'a y Wayna
+				</h1>
+				<p class="text-xl text-gray-600 mb-2">
+					Apoya a emprendedores locales y tradicionales
+				</p>
+				<p class="text-gray-500">
+					Conectando donantes con artesanos y emprendimientos de la comunidad
+				</p>
+			</header>
+
+			<!-- Panel PayPal -->
+			<PayPalPanel />
+
+			<!-- Footer -->
+			<footer class="mt-16 text-center text-gray-600 text-sm">
+				<p>© 2024 Manq'a y Wayna - Apoyo a Emprendedores</p>
+				<p class="mt-2 text-xs text-gray-500">Plataforma segura con pagos a través de PayPal</p>
+			</footer>
+		</div>
+	</main>
 </Layout>
+
+<style>
+	:global(body) {
+		background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+		min-height: 100vh;
+	}
+</style>
