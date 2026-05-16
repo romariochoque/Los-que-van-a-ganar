@@ -167,6 +167,7 @@ const estaDesbloqueado = (recompensa.donacionActual || 0) >= recompensa.montoDes
               <>
                 {/* Botón para Donar Más */}
                 <button
+                  onclick="window.location.href='/paypal-panel'"
                   class="py-3 px-4 bg-white text-orange-600 font-bold rounded-lg hover:bg-orange-50 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg text-sm"
                   id={`donate-btn-${recompensa.id}`}
                 >

@@ -105,6 +105,7 @@ const totalCarrito = insumos.reduce((sum, insumo) => sum + insumo.precio * (insu
 
             {/* Botón de Acción CTA */}
             <button
+              onclick="window.location.href='/paypal-panel'"
               class="w-full py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold rounded-lg hover:from-orange-600 hover:to-orange-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg insumo-btn"
               data-insumo-id={insumo.id}
               data-precio={insumo.precio}
