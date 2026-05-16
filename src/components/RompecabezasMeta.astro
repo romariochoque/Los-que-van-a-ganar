@@ -1,0 +1,396 @@
+---
+import Icon from "./icons/Icon.astro";
+
+
+interface Props {
+  meta: {
+    titulo: string;
+    objetivo: number; // Meta en USD
+    recolectado: number;
+    imagenBN: string; // URL imagen blanco/negro
+    imagenColor: string; // URL imagen a color
+  };
+  donantes?: Array<{
+    nombre: string;
+    monto: number;
+    fecha: string;
+  }>;
+  piezasDesbloqueadas?: number; // 0-9
+}
+
+const {
+  meta = {
+    titulo: "Construir un Horno Industrial para la Panadería Ancestral",
+    objetivo: 500,
+    recolectado: 350,
+    imagenBN: "/images/horno-bw.jpg",
+    imagenColor: "/images/horno-color.jpg",
+  },
+  donantes = [
+    { nombre: "María S.", monto: 50, fecha: "2024-05-10" },
+    { nombre: "Juan P.", monto: 100, fecha: "2024-05-11" },
+    { nombre: "Ana R.", monto: 25, fecha: "2024-05-12" },
+    { nombre: "Carlos M.", monto: 75, fecha: "2024-05-13" },
+    { nombre: "Elena T.", monto: 50, fecha: "2024-05-14" },
+  ],
+  piezasDesbloqueadas = 5,
+} = Astro.props;
+
+// Calcular progreso y pieza actual
+const porcentajeProgreso = Math.min((meta.recolectado / meta.objetivo) * 100, 100);
+const piezasTotal = 9;
+const piezasActuales = Math.min(Math.ceil((porcentajeProgreso / 100) * piezasTotal), piezasTotal);
+
+// Generar array de piezas
+const piezas = Array.from({ length: piezasTotal }, (_, i) => ({
+  id: i + 1,
+  desbloqueada: i < piezasActuales,
+  posicion: i,
+}));
+
+// Datos para tooltips
+const donantesPorPieza = donantes.slice(0, piezasActuales);
+---
+
+<div class="w-full max-w-2xl mx-auto px-4 py-12">
+  <!-- Encabezado -->
+  <div class="text-center mb-12">
+    <h2 class="text-4xl font-bold text-gray-900 mb-4">{meta.titulo}</h2>
+
+    <!-- Progreso General -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-6 mb-8">
+      <div class="flex-1">
+        <p class="text-gray-600 mb-2">
+          <span class="text-2xl font-bold text-green-600">${meta.recolectado}</span>
+          <span class="text-gray-500"> de ${meta.objetivo}</span>
+        </p>
+        <p class="text-sm text-gray-500">{porcentajeProgreso.toFixed(0)}% de la meta alcanzada</p>
+      </div>
+
+      <div class="text-center">
+        <p class="text-3xl font-bold text-blue-600">{piezasActuales}</p>
+        <p class="text-sm text-gray-600">de {piezasTotal} piezas desbloqueadas</p>
+      </div>
+    </div>
+
+    <p class="text-gray-600 text-sm max-w-lg mx-auto">
+      Cada donación desbloquea una pieza del rompecabezas. Ayuda a completar la imagen y conoce a los héroes detrás de
+      cada apoyo.
+    </p>
+  </div>
+
+  <!-- Grid de Rompecabezas (3x3) -->
+  <div
+    class="grid grid-cols-3 gap-4 mb-12 p-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg"
+    id="puzzle-grid"
+  >
+    {
+      piezas.map((pieza) => (
+        <div
+          class="relative aspect-square puzzle-piece group"
+          data-pieza-id={pieza.id}
+          data-desbloqueada={pieza.desbloqueada ? "true" : "false"}
+        >
+          {/* Contenedor 3D con efecto Flip */}
+          <div class="relative w-full h-full perspective-3d">
+            {/* Lado Frontal (Bloqueado) */}
+            <div
+              class={`
+                absolute w-full h-full rounded-lg overflow-hidden transition-all duration-700 ease-in-out
+                ${pieza.desbloqueada ? "opacity-0 pointer-events-none" : "opacity-100"}
+                puzzle-front
+              `}
+              style="backface-visibility: hidden; transform: rotateY(0deg)"
+            >
+              <div class="w-full h-full bg-gradient-to-br from-orange-300 via-amber-300 to-orange-400 flex flex-col items-center justify-center shadow-lg hover:shadow-2xl border-4 border-orange-500 group-hover:scale-105 transition-transform duration-300">
+                {/* Cerrojo Visual */}
+                <div class="mb-2 group-hover:scale-125 transition-transform duration-300">
+                  <Icon name="lock" size={36} class="text-white" />
+                </div>
+
+                {/* Número de Pieza */}
+                <p class="text-white font-bold text-lg">{pieza.id}</p>
+                <p class="text-white text-xs mt-1">Bloqueado</p>
+
+                {/* Efecto de brillo */}
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 animate-shimmer-puzzle" />
+              </div>
+            </div>
+
+            {/* Lado Trasero (Desbloqueado) */}
+            <div
+              class={`
+                absolute w-full h-full rounded-lg overflow-hidden transition-all duration-700 ease-in-out
+                ${pieza.desbloqueada ? "opacity-100" : "opacity-0 pointer-events-none"}
+                puzzle-back
+              `}
+              style="backface-visibility: hidden; transform: rotateY(180deg)"
+            >
+              {/* Imagen a Color */}
+              <img
+                src={meta.imagenColor}
+                alt="Pieza desbloqueada"
+                class="w-full h-full object-cover shadow-lg border-4 border-green-400"
+              />
+
+              {/* Overlay con efecto de revelado */}
+              <div class="absolute inset-0 bg-gradient-to-t from-green-600 via-transparent to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
+
+              {/* Checkmark de Confirmación */}
+              <div class="absolute top-2 right-2 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">
+                <Icon name="check" size={16} class="text-white" />
+              </div>
+            </div>
+          </div>
+
+          {/* Tooltip con Nombre del Donante */}
+          {pieza.desbloqueada && donantesPorPieza[pieza.id - 1] && (
+            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-lg z-10">
+              <p class="font-bold">{donantesPorPieza[pieza.id - 1]?.nombre}</p>
+              <p class="text-gray-300 text-xs">Donó ${donantesPorPieza[pieza.id - 1]?.monto}</p>
+              <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900" />
+            </div>
+          )}
+
+          {/* Tooltip para piezas bloqueadas */}
+          {!pieza.desbloqueada && (
+            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-lg z-10 whitespace-nowrap">
+              Haz una donación para desbloquear
+              <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-900" />
+            </div>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Lista de Donantes (Logro Social) -->
+  <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-8 border-2 border-orange-200">
+    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2"><Icon name="trophy" size={24} class="text-amber-500" /> Héroes que ya han aportado</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {
+        donantesPorPieza.map((donante, idx) => (
+          <div class="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 border-l-4 border-green-500">
+            {/* Avatar circular */}
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-amber-400 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+              {donante.nombre.charAt(0)}
+            </div>
+
+            <div class="flex-grow">
+              <p class="font-bold text-gray-900">{donante.nombre}</p>
+              <p class="text-sm text-gray-600 mb-1">
+                Desbloqueó pieza <span class="font-bold">{idx + 1}</span> de {piezasTotal}
+              </p>
+              <p class="text-xs text-gray-500">{donante.fecha}</p>
+            </div>
+
+            {/* Monto donado */}
+            <div class="text-right">
+              <p class="text-lg font-bold text-green-600">${donante.monto}</p>
+              <p class="text-xs text-gray-500">USD</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    {piezasActuales < piezasTotal && (
+      <div class="mt-6 p-4 bg-yellow-50 border-2 border-yellow-300 rounded-lg text-center">
+        <p class="text-sm text-yellow-900">
+          <span class="font-bold">¡Falta poco!</span> Necesitamos <strong>${meta.objetivo - meta.recolectado}</strong> más
+          USD para desbloquear las últimas piezas del rompecabezas.
+        </p>
+      </div>
+    )}
+  </div>
+
+  <!-- CTA Final -->
+  <div class="mt-12 text-center">
+    <button
+      class="inline-block py-4 px-8 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold text-lg rounded-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg"
+      id="btn-donar-puzzle"
+    >
+      <span class="flex items-center justify-center gap-2"><Icon name="gift" size={20} /> Sé el Próximo Héroe - Desbloquea una Pieza</span>
+    </button>
+  </div>
+</div>
+
+<!-- Estilos CSS para Animaciones 3D Avanzadas -->
+<style>
+  /* Perspective 3D */
+  .perspective-3d {
+    perspective: 1000px;
+  }
+
+  .puzzle-piece {
+    perspective: 1000px;
+  }
+
+  /* Animación de Flip cuando se desbloquea */
+  @keyframes flip {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(180deg);
+    }
+  }
+
+  .puzzle-piece[data-desbloqueada="true"] .puzzle-front {
+    animation: flip 0.6s ease-in-out forwards;
+  }
+
+  .puzzle-piece[data-desbloqueada="true"] .puzzle-back {
+    animation: flip 0.6s ease-in-out forwards;
+  }
+
+  /* Shimmer Animation */
+  @keyframes shimmer-puzzle {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer-puzzle {
+    animation: shimmer-puzzle 1.5s infinite;
+  }
+
+  /* Backface Visibility para 3D correctamente */
+  .puzzle-front,
+  .puzzle-back {
+    backface-visibility: hidden;
+  }
+
+  /* Pulse para atraer atención a piezas desbloqueadas */
+  @keyframes pulse-unlock {
+    0% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 12px rgba(34, 197, 94, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+  }
+
+  .puzzle-piece[data-desbloqueada="true"] {
+    animation: pulse-unlock 2s infinite;
+  }
+
+  /* Mejorar accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Lógica de Interacción del Rompecabezas
+
+  interface PuzzlePiece {
+    id: number;
+    desbloqueada: boolean;
+  }
+
+  class PuzzleManager {
+    private piezasElements: NodeListOf<Element>;
+    private totalPiezas: number = 9;
+
+    constructor() {
+      this.piezasElements = document.querySelectorAll(".puzzle-piece");
+      this.initEventListeners();
+    }
+
+    private initEventListeners(): void {
+      // Event listener en botón de donación
+      const btnDonar = document.getElementById("btn-donar-puzzle");
+      if (btnDonar) {
+        btnDonar.addEventListener("click", () => {
+          this.simulateUnlock();
+        });
+      }
+
+      // Event listeners en piezas individuales
+      this.piezasElements.forEach((pieza) => {
+        pieza.addEventListener("mouseenter", (e) => {
+          this.playAudio("hover");
+        });
+
+        pieza.addEventListener("click", () => {
+          const desbloqueada = pieza.getAttribute("data-desbloqueada") === "true";
+          if (!desbloqueada) {
+            console.log("Intento de desbloquear pieza - requiere donación");
+          }
+        });
+      });
+    }
+
+    private simulateUnlock(): void {
+      // Buscar primera pieza bloqueada
+      const piezaBloqueada = Array.from(this.piezasElements).find(
+        (pieza) => pieza.getAttribute("data-desbloqueada") === "false"
+      );
+
+      if (piezaBloqueada) {
+        // TODO: Abrir modal de donación
+        console.log("Abrir modal de donación para desbloquear pieza");
+
+        // Simular desbloqueo después de 2 segundos (reemplazar con respuesta real de backend)
+        setTimeout(() => {
+          this.unlockPiece(piezaBloqueada);
+        }, 2000);
+      } else {
+        alert("¡Felicidades! Has desbloqueado todas las piezas del rompecabezas!");
+      }
+    }
+
+    private unlockPiece(pieza: Element): void {
+      pieza.setAttribute("data-desbloqueada", "true");
+
+      // Reproducir sonido de desbloqueo
+      this.playAudio("unlock");
+
+      // Efecto visual: frame de animación
+      pieza.classList.add("scale-110");
+      setTimeout(() => {
+        pieza.classList.remove("scale-110");
+      }, 300);
+
+      // Notificación visual
+      this.showNotification("🔓 ¡Pieza desbloqueada! Gracias por tu generosidad");
+    }
+
+    private playAudio(type: "hover" | "unlock"): void {
+      // TODO: Integrar con audio files
+      if (type === "hover") {
+        // console.log("Play hover sound");
+      } else if (type === "unlock") {
+        console.log("▶️ Play unlock sound (integration needed)");
+      }
+    }
+
+    private showNotification(message: string): void {
+      const notification = document.createElement("div");
+      notification.className =
+        "fixed top-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-pulse";
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  }
+
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener("DOMContentLoaded", () => {
+    new PuzzleManager();
+  });
+</script>

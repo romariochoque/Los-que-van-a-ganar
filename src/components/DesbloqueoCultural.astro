@@ -1,0 +1,355 @@
+---
+import Icon from "./icons/Icon.astro";
+
+interface Props {
+  recompensa: {
+    id: string;
+    titulo: string;
+    descripcionCorta: string;
+    descripcionCompleta?: string;
+    icono: string;
+    montoDesbloqueo: number; // USD requeridos para desbloquear
+    tipo: "pdf" | "video" | "receta" | "tutorial"; // Tipo de contenido
+    imagenPreview?: string;
+    desbloqueado?: boolean; // Estado del usuario actual
+    donacionActual?: number;
+  };
+}
+
+const {
+  recompensa = {
+    id: "receta-llajua",
+    titulo: "La Receta Secreta de la Llajua de Abuela",
+    descripcionCorta: "3 generaciones de tradición andina en una salsa",
+    descripcionCompleta:
+      "Descubre los ingredientes ocultos y técnicas ancestrales que hacen única esta receta. Incluye tips para preparar, conservar y servir con estilo.",
+    icono: "flame",
+    montoDesbloqueo: 25,
+    tipo: "pdf",
+    desbloqueado: false,
+    donacionActual: 0,
+  },
+} = Astro.props;
+
+// Calcular porcentaje de desbloqueado
+const porcentajeDesbloqueado = Math.min(
+  (recompensa.donacionActual || 0) / recompensa.montoDesbloqueo,
+  1
+) * 100;
+const estaDesbloqueado = (recompensa.donacionActual || 0) >= recompensa.montoDesbloqueo;
+---
+
+<div class="w-full max-w-xl mx-auto px-4 py-8">
+  <!-- Contenedor Principal con Efecto 3D -->
+  <div
+    class="relative group perspective"
+    id={`recompensa-${recompensa.id}`}
+  >
+    {/* Contenedor con efecto de profundidad */}
+    <div class="relative">
+      <!-- Fondo decorativo blur (solo cuando está bloqueado) -->
+      {
+        !estaDesbloqueado && (
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-200 via-amber-100 to-orange-100 rounded-2xl blur-3xl opacity-50 -z-10 animate-pulse" />
+        )
+      }
+
+      <!-- Tarjeta Principal -->
+      <div
+        class={`
+          relative rounded-2xl overflow-hidden transition-all duration-700 ease-out
+          ${estaDesbloqueado
+            ? "bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500 shadow-2xl"
+            : "bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 shadow-lg border-2 border-gray-200"}
+        `}
+      >
+        {/* Efecto de destello (shine) cuando se desbloquea */}
+        {
+          estaDesbloqueado && (
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 animate-shimmer-slow" />
+          )
+        }
+
+        <div class="p-8 relative z-10">
+          {/* Icono Principal */}
+          <div
+            class={`
+              mb-6 transition-all duration-500 flex items-center justify-center
+              ${estaDesbloqueado ? "scale-110" : "scale-100 opacity-60"}
+            `}
+          >
+            <Icon name={recompensa.icono} size={48} class={estaDesbloqueado ? "text-white" : "text-gray-400"} />
+          </div>
+
+          {/* Título y Descripción */}
+          <h3
+            class={`
+              text-2xl font-bold mb-2 transition-colors duration-500
+              ${estaDesbloqueado ? "text-white" : "text-gray-800"}
+            `}
+          >
+            {recompensa.titulo}
+          </h3>
+
+          <p
+            class={`
+              text-sm mb-6 transition-colors duration-500
+              ${estaDesbloqueado ? "text-orange-100" : "text-gray-600"}
+            `}
+          >
+            {estaDesbloqueado
+              ? recompensa.descripcionCompleta || recompensa.descripcionCorta
+              : recompensa.descripcionCorta}
+          </p>
+
+          {/* Estado: BLOQUEADO vs DESBLOQUEADO */}
+          {!estaDesbloqueado && (
+            <div class="mb-6">
+                <div class="flex items-center justify-center mb-4">
+                  <Icon name="lock" size={36} class="text-gray-500" />
+              </div>
+
+              {/* Barra de Progreso Elegante */}
+              <div class="bg-gray-300 rounded-full h-2 overflow-hidden mb-3">
+                <div
+                  class="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full transition-all duration-700 ease-out"
+                  style={`width: ${porcentajeDesbloqueado}%`}
+                  role="progressbar"
+                  aria-valuenow={Math.round(porcentajeDesbloqueado)}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                />
+              </div>
+
+              {/* Texto de Progreso */}
+              <p class="text-xs text-gray-600 text-center">
+                ${recompensa.donacionActual || 0} de ${recompensa.montoDesbloqueo} USD para desbloquear
+              </p>
+            </div>
+          )}
+
+          {estaDesbloqueado && (
+            <div class="mb-6 bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+              {/* Indicador de Desbloqueado */}
+              <div class="flex items-center justify-center mb-2">
+                <span class="mr-2"><Icon name="sparkles" size={20} class="text-yellow-300 inline" /></span>
+                <span class="text-white font-bold">DESBLOQUEADO</span>
+                <span class="ml-2"><Icon name="unlock" size={20} class="text-yellow-300 inline" /></span>
+              </div>
+              <p class="text-white text-sm text-center">
+                ¡Gracias por tu apoyo! Tienes acceso exclusivo a este contenido premium.
+              </p>
+            </div>
+          )}
+
+          {/* Badge de Tipo de Contenido */}
+          <div class="flex items-center justify-center mb-6">
+            <span
+              class={`
+                inline-block px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide
+                ${
+                  estaDesbloqueado
+                    ? "bg-white text-orange-600"
+                    : "bg-gray-300 text-gray-700"
+                }
+              `}
+            >
+              {recompensa.tipo === "pdf" && <><Icon name="file-text" size={14} class="inline mr-1" /> Descargable</>}
+              {recompensa.tipo === "video" && <><Icon name="video" size={14} class="inline mr-1" /> Video</>}
+              {recompensa.tipo === "receta" && <><Icon name="chef-hat" size={14} class="inline mr-1" /> Receta</>}
+              {recompensa.tipo === "tutorial" && <><Icon name="book-open" size={14} class="inline mr-1" /> Tutorial</>}
+            </span>
+          </div>
+
+          {/* Botones de Acción */}
+          <div class="grid grid-cols-2 gap-3">
+            {!estaDesbloqueado && (
+              <>
+                {/* Botón para Donar Más */}
+                <button
+                  onclick="window.location.href='/paypal-panel'"
+                  class="py-3 px-4 bg-white text-orange-600 font-bold rounded-lg hover:bg-orange-50 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg text-sm"
+                  id={`donate-btn-${recompensa.id}`}
+                >
+                  <span class="flex items-center justify-center gap-2"><Icon name="wallet" size={16} /> Apoya Ahora</span>
+                </button>
+
+                {/* Botón de Info */}
+                <button
+                  class="py-3 px-4 bg-orange-400 text-white font-bold rounded-lg hover:bg-orange-500 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg text-sm"
+                  id={`info-btn-${recompensa.id}`}
+                >
+                  <span class="flex items-center justify-center gap-2"><Icon name="info" size={16} /> Más Info</span>
+                </button>
+              </>
+            )}
+
+            {estaDesbloqueado && (
+              <>
+                {/* Botón de Descarga/Acceso */}
+                <button
+                  class="col-span-2 py-4 px-4 bg-white text-orange-600 font-bold rounded-lg hover:bg-orange-50 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-xl text-base"
+                  id={`access-btn-${recompensa.id}`}
+                >
+                  {recompensa.tipo === "pdf" && <><Icon name="download" size={18} class="inline mr-1" /> Descargar PDF</>}
+                  {recompensa.tipo === "video" && <><Icon name="video" size={18} class="inline mr-1" /> Ver Video</>}
+                  {recompensa.tipo === "receta" && <><Icon name="chef-hat" size={18} class="inline mr-1" /> Ver Receta Completa</>}
+                  {recompensa.tipo === "tutorial" && <><Icon name="book-open" size={18} class="inline mr-1" /> Acceder Tutorial</>}
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Texto Motivacional */}
+          <p class="text-xs text-center mt-4 opacity-75">
+            {estaDesbloqueado
+              ? "Tu generosidad ha desbloqueado este tesoro cultural"
+              : "Falta poco para desbloquear este contenido exclusivo"}
+          </p>
+        </div>
+      </div>
+
+      {/* Efecto de Sombra Flotante bajo el cursor */}
+      <div
+        class="absolute inset-0 rounded-2xl bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-5 pointer-events-none transition-opacity duration-300"
+      />
+    </div>
+  </div>
+
+  {/* Sección de Beneficios (Solo cuando está DESBLOQUEADO) */}
+  {
+    estaDesbloqueado && (
+      <div class="mt-8 bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border-2 border-orange-200">
+        <h4 class="text-lg font-bold text-orange-900 mb-4 flex items-center gap-2"><Icon name="package" size={20} class="text-orange-600" /> Qué recibes:</h4>
+        <ul class="space-y-2 text-sm text-gray-700">
+          <li class="flex items-start">
+            <span class="text-orange-600 mr-3"><Icon name="check" size={16} /></span>
+            <span>Acceso permanente al contenido (sin vencer)</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-orange-600 mr-3"><Icon name="check" size={16} /></span>
+            <span>Futuras actualizaciones del mismo contenido gratis</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-orange-600 mr-3 font-bold">✓</span>
+            <span>Insignia especial de Mecenas en tu perfil</span>
+          </li>
+          <li class="flex items-start">
+            <span class="text-orange-600 mr-3 font-bold">✓</span>
+            <span>Apoyo directo a la preservación cultural</span>
+          </li>
+        </ul>
+      </div>
+    )
+  }
+</div>
+
+<!-- Estilos CSS Personalizados -->
+<style>
+  @keyframes shimmer-slow {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-shimmer-slow {
+    animation: shimmer-slow 2s infinite;
+  }
+
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 2s infinite;
+  }
+
+  /* Efecto de perspectiva 3D */
+  .perspective {
+    perspective: 1000px;
+  }
+
+  /* Transiciones suaves */
+  * {
+    transition: all 0.3s ease;
+  }
+
+  /* Mejorar legibilidad del texto en estados bloqueados */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Lógica de Interacción
+
+  interface RecompensaState {
+    id: string;
+    desbloqueado: boolean;
+    donacionActual: number;
+  }
+
+  function handleDesbloqueo(
+    recompensaId: string,
+    montoRequerido: number
+  ): void {
+    const donateBtn = document.getElementById(`donate-btn-${recompensaId}`);
+    const infoBtn = document.getElementById(`info-btn-${recompensaId}`);
+
+    if (donateBtn) {
+      donateBtn.addEventListener("click", () => {
+        // TODO: Abrir modal de donación específico
+        console.log(
+          `Abriendo modal de donación para desbloquear: ${recompensaId}`
+        );
+        console.log(`Monto requerido: $${montoRequerido}`);
+
+        // Simular apertura de modal de pago
+        alert(
+          `Donar al menos $${montoRequerido} USD para desbloquear este contenido exclusivo`
+        );
+      });
+    }
+
+    if (infoBtn) {
+      infoBtn.addEventListener("click", () => {
+        // Mostrar detalles en modal o tooltip
+        console.log(`Mostrar más información sobre: ${recompensaId}`);
+        alert(
+          "Este contenido contiene la sabiduría cultural de generaciones. Tu apoyo permite que se preserve y comparta."
+        );
+      });
+    }
+
+    const accessBtn = document.getElementById(`access-btn-${recompensaId}`);
+    if (accessBtn) {
+      accessBtn.addEventListener("click", () => {
+        // TODO: Integrar con CDN o servidor de descargas
+        console.log(`Accediendo a contenido desbloqueado: ${recompensaId}`);
+        // Redirigir a descarga o video
+      });
+    }
+  }
+
+  // Inicializar lógica para cada recompensa
+  document.addEventListener("DOMContentLoaded", () => {
+    // Buscar todos los componentes de recompensa
+    const recompensas = document.querySelectorAll("[id^='recompensa-']");
+    recompensas.forEach((elem) => {
+      const id = elem.id.replace("recompensa-", "");
+      // Asumir montoDesbloqueo por defecto (mejorar con data attributes)
+      handleDesbloqueo(id, 25);
+    });
+  });
+</script>

@@ -18,7 +18,10 @@
 
 ## 🗄 Base de datos
 * **Motor de base de datos:** SUPABASE
+
 ## 🏗 Arquitectura 
 * **Tipo de sistema:** Ecosistema Digital Micro-donaciones con Arquitetura de Creditos de Impacto
 * **Arquitectura seleccionada:** ARQUITECTURA CLIENTE-SERVIDOR
 
+## 📋 Hallazgos de revisión
+* Revisión completada por el equipo de auditoría

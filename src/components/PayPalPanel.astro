@@ -1,0 +1,126 @@
+---
+// Aquí puedes agregar lógica del servidor en el futuro (ej. obtener el saldo de una BD)
+// const usuario = "Cesar Medrano";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recarga Libre de Saldo</title>
+    <!-- NOTA: Si ya tienes configurado @astrojs/tailwind en tu proyecto, puedes eliminar esta línea -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-100 to-slate-300 min-h-screen flex items-center justify-center p-4 font-sans">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-200">
+        
+        <div class="bg-gradient-to-r from-sky-500 to-emerald-400 py-5 text-center shadow-inner">
+            <h2 class="text-white text-2xl font-bold tracking-wide">Recargar Saldo</h2>
+        </div>
+
+        <div class="p-6 space-y-5">
+            <div class="bg-cyan-50 border border-cyan-100 rounded-xl p-4 text-center shadow-sm">
+                <div class="text-slate-700 text-sm font-medium">
+                    Saldo Actual: <span id="visual-saldo" class="font-black text-blue-900 bg-blue-100/80 px-2 py-0.5 rounded text-lg">0.00 Bs.</span>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-2 mt-4 text-[11px] text-slate-600 font-medium border-t border-cyan-200/50 pt-3">
+                    <div>
+                        <span class="font-bold text-slate-800">Nombre:</span><br>
+                        <span class="leading-tight block mt-0.5">Cesar Medrano</span>
+                    </div>
+                    <div>
+                        <span class="font-bold text-slate-800">Tarjeta:</span><br>
+                        <span class="font-mono mt-0.5 block">B389C11C</span>
+                    </div>
+                    <div class="truncate">
+                        <span class="font-bold text-slate-800">Email:</span><br>
+                        <span class="truncate block mt-0.5" title="cfmp0402@gmail.com">cfmp0402@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label for="input-monto" class="block text-sm font-bold text-slate-700 mb-2 text-center">Ingresa el Monto a Recargar (USD):</label>
+                <div class="relative max-w-[200px] mx-auto shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="text-slate-500 font-black text-lg">$</span>
+                    </div>
+                    <input type="number" id="input-monto" min="1" step="any" placeholder="0.00" 
+                        class="block w-full text-center pl-6 pr-3 py-3 border border-slate-300 rounded-xl text-lg font-black text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all">
+                </div>
+            </div>
+
+            <div id="paypal-button-container" class="w-full relative z-10 pt-2 min-h-[45px]"></div>
+        </div>
+    </div>
+
+    <!-- Script de SDK externo con is:inline -->
+    <script is:inline src="https://www.paypal.com/sdk/js?client-id=AYaQ6yzDA23Y8uGbdm-3eV-BBgPRqbrLDOdh7FG_BBJpLyaZdePr-f50oOXcGcRqEXdgMG-4cicKfcFC&currency=USD"></script>
+
+    <!-- Script local manejado por Astro -->
+    <script>
+        // Envolvemos la lógica para asegurarnos de que el DOM esté listo y evitar errores
+        // especialmente útil si usas View Transitions en Astro
+        document.addEventListener('DOMContentLoaded', () => {
+            let saldoActual = 0.00;
+
+            // Comprobamos si el script de PayPal cargó correctamente
+            if ((window as any).paypal) {
+                ((window as any).paypal).Buttons({
+                    style: { layout: 'vertical', color: 'gold', shape: 'rect', height: 45 },
+                    
+                    // 1. Cuando el usuario hace clic en pagar, leemos la caja de texto
+                    createOrder: function(data: any, actions: any) {
+                        const inputMontoEl = document.getElementById('input-monto') as HTMLInputElement;
+                        const inputMonto = inputMontoEl ? inputMontoEl.value.trim() : '0';
+                        const montoValidado = parseFloat(inputMonto);
+
+                        if (isNaN(montoValidado) || montoValidado <= 0) {
+                            alert("Por favor, escribe un monto válido (mayor a $0) en la casilla antes de continuar.");
+                            return false; // Detiene a PayPal si no hay monto
+                        }
+
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: { value: montoValidado.toFixed(2) },
+                                description: "Recarga de saldo bancario a tarjeta: B389C11C"
+                            }]
+                        });
+                    },
+                    
+                    // 2. Cuando el pago es exitoso
+                    onApprove: function(data: any, actions: any) {
+                        return actions.order.capture().then(function(orderData: any) {
+                            const inputMontoEl = document.getElementById('input-monto') as HTMLInputElement;
+                            const inputMonto = inputMontoEl ? inputMontoEl.value.trim() : '0';
+                            const montoCargado = parseFloat(inputMonto);
+                            
+                            // Actualizamos el saldo visualmente
+                            saldoActual += montoCargado;
+                            
+                            const visualSaldo = document.getElementById('visual-saldo');
+                            if (visualSaldo) {
+                                visualSaldo.innerText = `${saldoActual.toFixed(2)} Bs.`;
+                            }
+                            
+                            if (inputMontoEl) {
+                                inputMontoEl.value = ""; 
+                            }
+                            
+                            alert(`¡Transacción Exitosa!\nHas recargado $${montoCargado.toFixed(2)} USD.\nNuevo saldo: ${saldoActual.toFixed(2)} Bs.`);
+                        });
+                    }
+                }).render('#paypal-button-container');
+            } else {
+                const container = document.getElementById('paypal-button-container');
+                if (container) {
+                    container.innerHTML = "<p class='text-red-500 text-sm text-center'>Error al cargar PayPal. Revisa tu conexión a internet.</p>";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

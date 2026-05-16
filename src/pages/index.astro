@@ -1,0 +1,326 @@
+---
+
+
+import InsumosGrid from "../components/InsumosGrid.astro";
+import DesbloqueoCultural from "../components/DesbloqueoCultural.astro";
+import RompecabezasMeta from "../components/RompecabezasMeta.astro";
+import PolaroidImpacto from "../components/PolaroidImpacto.astro";
+import Icon from "../components/icons/Icon.astro";
+import "../styles/globals.css";
+
+// Datos del Emprendedor
+const empresario = {
+  nombre: "María Quispe Condori",
+  foto: "https://via.placeholder.com/200",
+  emprendimiento: "Panadería Ancestral Manq'a",
+  ubicacion: "La Paz, Bolivia",
+  descripcion:
+    "Tercera generación de panaderas. Mantengo vivas las recetas andinas que mi abuela me enseñó. Cada pan es una historia de tradición.",
+  bio: "Soy María, descendiente de una familia de panaderas cusqueñas. Mi misión es revitalizar el pan ancestral andino, combinando técnicas milenarias con ingredientes locales de la región.",
+  meta: {
+    titulo: "Construir un Horno Industrial Ancestral",
+    descripcion:
+      "Para poder producir pan en mayor cantidad sin perder la esencia tradicional de la receta",
+    objetivo: 500,
+    recolectado: 350,
+    imagenBN: "https://via.placeholder.com/400?text=Horno+BN",
+    imagenColor: "https://via.placeholder.com/400?text=Horno+Color",
+  },
+  insumos: [
+    {
+      id: "harina",
+      nombre: "Saco de Harina Orgánica",
+      precio: 5,
+      descripcion: "Ingrediente base de calidad premium",
+      icono: "wheat",
+    },
+    {
+      id: "delivery",
+      nombre: "Cúbrele el Delivery",
+      precio: 10,
+      descripcion: "Gastos de envío a sus clientes",
+      icono: "truck",
+    },
+    {
+      id: "especias",
+      nombre: "Kit de Especias Andinas",
+      precio: 15,
+      descripcion: "Sabores auténticos del Perú",
+      icono: "flame",
+    },
+    {
+      id: "equipamiento",
+      nombre: "Herramienta Especializada",
+      precio: 25,
+      descripcion: "Para mejorar producción",
+      icono: "hammer",
+    },
+  ],
+  recompensas: [
+    {
+      id: "receta-llajua",
+      titulo: "La Receta Secreta de Llajua",
+      descripcionCorta: "3 generaciones de tradición",
+      descripcionCompleta:
+        "Descubre los ingredientes ocultos y técnicas ancestrales que hacen única esta receta.",
+      icono: "flame",
+      montoDesbloqueo: 25,
+      tipo: "pdf" as const,
+      desbloqueado: true,
+      donacionActual: 50,
+    },
+    {
+      id: "video-tecnica",
+      titulo: "Tutorial: Técnica de Horneado Ancestral",
+      descripcionCorta: "Video exclusivo mostrando el proceso paso a paso",
+      descripcionCompleta:
+        "Aprende cómo María hornea el pan usando métodos heredados de generación en generación.",
+      icono: "video",
+      montoDesbloqueo: 50,
+      tipo: "video" as const,
+      desbloqueado: false,
+      donacionActual: 30,
+    },
+    {
+      id: "libro-recetas",
+      titulo: "E-book: 50 Recetas Andinas",
+      descripcionCorta: "Colección completa de recetas familiares",
+      descripcionCompleta:
+        "Un compendio de 50 recetas tradicionales andinas recopiladas durante 30 años.",
+      icono: "book-open",
+      montoDesbloqueo: 75,
+      tipo: "tutorial" as const,
+      desbloqueado: false,
+      donacionActual: 0,
+    },
+  ],
+  donantes: [
+    { nombre: "Juan Pérez", monto: 100, fecha: "2024-05-10" },
+    { nombre: "Ana García", monto: 50, fecha: "2024-05-11" },
+    { nombre: "Carlos López", monto: 75, fecha: "2024-05-12" },
+    { nombre: "Elena Martínez", monto: 25, fecha: "2024-05-13" },
+    { nombre: "Roberto Sánchez", monto: 100, fecha: "2024-05-14" },
+  ],
+};
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{empresario.emprendimiento} - Wayna Impacto</title>
+    <style is:global>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+      }
+
+      /* Utility Classes */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.8s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="bg-gradient-to-r from-orange-600 to-amber-600 text-white py-12 sticky top-0 z-40 shadow-lg">
+      <div class="container">
+        <div class="flex items-center justify-between mb-8">
+          <h1 class="text-3xl font-black flex items-center gap-2"><Icon name="globe" size={28} class="text-white" /> Wayna</h1>
+          <button class="px-6 py-2 bg-white text-orange-600 font-bold rounded-lg hover:scale-105 transition">
+            Mi Cuenta
+          </button>
+        </div>
+      </div>
+    </header>
+    <section class="bg-gradient-to-b from-orange-50 to-white py-16">
+      <div class="container">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start fade-in">
+          <div class="md:col-span-1 text-center">
+            <img
+              src={empresario.foto || "https://via.placeholder.com/250"}
+              alt={empresario.nombre}
+              class="w-48 h-48 rounded-full object-cover mx-auto mb-6 shadow-xl border-4 border-orange-300"
+            />
+            <h1 class="text-3xl font-black text-gray-900 mb-2">{empresario.nombre}</h1>
+            <p class="text-lg text-orange-600 font-bold mb-2">{empresario.emprendimiento}</p>
+            <p class="text-gray-600 mb-4 flex items-center gap-1"><Icon name="map-pin" size={16} class="text-orange-500" /> {empresario.ubicacion}</p>
+            <div class="grid grid-cols-2 gap-4 mt-8">
+              <div class="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
+                <p class="text-2xl font-black text-blue-600">${empresario.meta.recolectado}</p>
+                <p class="text-xs text-gray-600">Recolectado</p>
+              </div>
+              <div class="bg-green-50 rounded-lg p-4 border-2 border-green-200">
+                <p class="text-2xl font-black text-green-600">{empresario.donantes.length}</p>
+                <p class="text-xs text-gray-600">Donantes</p>
+              </div>
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Mi Historia</h2>
+            <p class="text-gray-700 text-lg mb-6 leading-relaxed">{empresario.bio}</p>
+
+            <div class="bg-gradient-to-r from-orange-50 to-amber-50 border-l-4 border-orange-500 p-6 rounded-lg mb-6">
+              <h3 class="font-bold text-orange-900 mb-2 flex items-center gap-2"><Icon name="target" size={18} class="text-orange-600" /> Mi Meta</h3>
+              <p class="text-gray-800 font-semibold mb-2">{empresario.meta.titulo}</p>
+              <p class="text-sm text-gray-700">{empresario.meta.descripcion}</p>
+            </div>
+
+            {/* Call to Action Principal */}
+            <button onclick="window.location.href='/paypal-panel'" class="w-full md:w-auto py-4 px-8 bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold text-lg rounded-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg">
+              <span class="flex items-center justify-center gap-2"><Icon name="wallet" size={20} /> Apoya Ahora a {empresario.nombre}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="insumos" class="py-20 bg-white">
+      <div class="container">
+        <h2 class="text-4xl font-black text-center mb-4 gradient-text">
+          Elige Tu Forma de Apoyar
+        </h2>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          Cada compra de insumos tiene un impacto directo. Elige lo que más te llame la atención:
+        </p>
+
+        <InsumosGrid empresario={{ nombre: empresario.nombre, meta: empresario.meta.objetivo, recolectado: empresario.meta.recolectado }} insumos={empresario.insumos} />
+      </div>
+    </section>
+    <section id="recompensas" class="py-20 bg-gradient-to-b from-orange-50 to-white">
+      <div class="container">
+        <h2 class="text-4xl font-black text-center mb-4 gradient-text">
+          <span class="flex items-center justify-center gap-2"><Icon name="unlock" size={28} class="inline" /> Contenido Exclusivo Desbloqueado</span>
+        </h2>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          Conforme apoyas, desbloqueas contenido cultural único que solo María puede compartir:
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {
+            empresario.recompensas.map((recompensa) => (
+              <DesbloqueoCultural recompensa={recompensa} />
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    <section id="meta" class="py-20 bg-gradient-to-b from-white to-blue-50">
+      <div class="container">
+        <h2 class="text-4xl font-black text-center mb-4 gradient-text">
+          <span class="flex items-center justify-center gap-2"><Icon name="bar-chart" size={28} class="inline" /> Visualiza el Progreso</span>
+        </h2>
+
+        <RompecabezasMeta
+          meta={empresario.meta}
+          donantes={empresario.donantes}
+          piezasDesbloqueadas={Math.ceil((empresario.meta.recolectado / empresario.meta.objetivo) * 9)}
+        />
+      </div>
+    </section>
+    <section id="impacto" class="py-20 bg-gradient-to-b from-amber-50 to-white">
+      <div class="container">
+        <h2 class="text-4xl font-black text-center mb-4 gradient-text">
+          <span class="flex items-center justify-center gap-2"><Icon name="sparkles" size={28} class="inline" /> Comparte Tu Impacto</span>
+        </h2>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          Después de tu donación, crea una Polaroid personalizada y comparte en tus redes:
+        </p>
+
+        <PolaroidImpacto
+          impacto={{
+            empresario: {
+              nombre: empresario.nombre,
+              emprendimiento: empresario.emprendimiento,
+            },
+            donacion: {
+              monto: 25,
+              concepto: "Kit de Especias Andinas Premium",
+            },
+            impactoDirecto: "Alimentará a 100 personas con pan ancestral",
+            fecha: new Date().toLocaleDateString("es-ES"),
+            colorPrimario: "amber",
+          }}
+        />
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white py-12">
+      <div class="container">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div>
+            <h3 class="font-black text-lg mb-4 flex items-center gap-2"><Icon name="globe" size={20} /> Wayna</h3>
+            <p class="text-gray-400 text-sm">
+              Conectando donantes con emprendedores que transforman culturas.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Plataforma</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-white transition">Explorar Emprendimientos</a></li>
+              <li><a href="#" class="hover:text-white transition">Cómo Funciona</a></li>
+              <li><a href="#" class="hover:text-white transition">Preguntas Frecuentes</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Comunidad</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-white transition">Blog</a></li>
+              <li><a href="#" class="hover:text-white transition">Instagram</a></li>
+              <li><a href="#" class="hover:text-white transition">Twitter</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-4">Legal</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-white transition">Privacidad</a></li>
+              <li><a href="#" class="hover:text-white transition">Términos</a></li>
+              <li><a href="#" class="hover:text-white transition">Contacto</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+          <p>&copy; 2024 Wayna - Impacto Social Global. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
